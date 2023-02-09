@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  api: &api
+    user: "container_user:container_user"
+    container_name: app
+    image: app/api:latest
+    # command: python main.py
+    command: "tail -f /dev/null" # Infinite loop to keep container live doing
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./src:/opt/backend/
+      # - ./coverage/.coveragerc-api:/opt/backend/.coveragerc
+    ports:
+      - "5000:5000"
+    restart: always
+    env_file:
+      - ./.env
+    build:
+      context: ./
+      # args:
+      #   - GIT_ACCESS_TOKEN=${GIT_TOKEN}
+      #   - MODEL_VERSION=development
+      dockerfile: ./Dockerfile
